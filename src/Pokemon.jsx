@@ -21,11 +21,12 @@ export const Pokemon = () => {
             return data;
         });
 
-        const detailedRespones = await Promise.all(detailedPokemonData);
+        const detailedRespones = await Promise.all(detailedPokemonData);  //Only if we get all the data then only we will proceed
         setPokemon(detailedRespones);
-        setLoading(false);
+        setLoading(false);   //because data is fetched
 
         console.log("Detailed Pokemon Data:", detailedRespones);
+        
         }catch(error){
             console.log("Error while fetching the data", error);
             setLoading(false);
