@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { PokemonCards } from "./PokemonCards";
+import "./index.css";
 
 export const Pokemon = () => {
 
     const [pokemon, setPokemon] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [search, setSearch] = useState("");
 
     const API = "https://pokeapi.co/api/v2/pokemon?limit=24";
 
@@ -26,7 +28,7 @@ export const Pokemon = () => {
         setLoading(false);   //because data is fetched
 
         console.log("Detailed Pokemon Data:", detailedRespones);
-        
+
         }catch(error){
             console.log("Error while fetching the data", error);
             setLoading(false);
@@ -37,6 +39,10 @@ export const Pokemon = () => {
     useEffect(() => {
         fetchPokemon();
     }, []);
+     
+     const searchData = pokemon.filter((currPok)=> {
+        return currPok.name.toLowerCase().includes(search.toLowerCase())
+    }); 
 
     if(loading){
         return (
@@ -54,10 +60,18 @@ export const Pokemon = () => {
     <header>
         <h1>Pokemon Club</h1>
     </header>
+    <div className="pokemon-search">
+        <input 
+        type="text" 
+        placeholder="Search Pokemon"
+        value={search}
+        onChange={(e)=>setSearch(e.target.value)}
+        />
+    </div>
       
       <ul className="cards">
         {
-            pokemon.map((poke)=>{
+            searchData.map((poke)=>{
                 return (
                     <PokemonCards key={poke.id} poke={poke}/>
             );
